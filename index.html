@@ -1,529 +1,1206 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+html_code = '''<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio 37 Films | Cinematic Storytelling</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['Cormorant Garamond', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        gold: {
-                            400: '#D4AF37',
-                            500: '#C5A028',
-                            600: '#B08D1E',
-                        },
-                        dark: {
-                            900: '#0a0a0a',
-                            800: '#141414',
-                            700: '#1a1a1a',
-                        }
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
-                        'grain': 'grain 8s steps(10) infinite',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        grain: {
-                            '0%, 100%': { transform: 'translate(0, 0)' },
-                            '10%': { transform: 'translate(-5%, -10%)' },
-                            '20%': { transform: 'translate(-15%, 5%)' },
-                            '30%': { transform: 'translate(7%, -25%)' },
-                            '40%': { transform: 'translate(-5%, 25%)' },
-                            '50%': { transform: 'translate(-15%, 10%)' },
-                            '60%': { transform: 'translate(15%, 0%)' },
-                            '70%': { transform: 'translate(0%, 15%)' },
-                            '80%': { transform: 'translate(3%, 35%)' },
-                            '90%': { transform: 'translate(-10%, 10%)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Lens 37 — Visual Storytelling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        .text-stroke {
-            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.3);
-            color: transparent;
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a28;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-gold: #d4a853;
+            --accent-gold-light: #e8c87a;
+            --accent-coral: #e07a5f;
+            --accent-teal: #4ecdc4;
+            --accent-amber: #f2cc8f;
+            --accent-rose: #c9ada7;
+            --gradient-warm: linear-gradient(135deg, #d4a853 0%, #e07a5f 50%, #4ecdc4 100%);
+            --gradient-subtle: linear-gradient(135deg, rgba(212,168,83,0.1) 0%, rgba(224,122,95,0.05) 100%);
         }
-        .video-overlay {
-            background: linear-gradient(to bottom, rgba(10,10,10,0.3), rgba(10,10,10,0.9));
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .grain-overlay {
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
             position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+        }
+
+        .logo span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 50;
-            animation: grain 8s steps(10) infinite;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212,168,83,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(78,205,196,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(224,122,95,0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
         }
-        .reveal {
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid rgba(212,168,83,0.3);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 .accent {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-slogan {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-style: italic;
+            color: var(--accent-rose);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-warm);
+            color: var(--bg-deep);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212,168,83,0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 4rem;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--bg-card);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold-light);
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-elevated);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-visual-inner {
+            background: var(--gradient-subtle);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid rgba(212,168,83,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual-inner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212,168,83,0.1) 0%, transparent 70%);
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .visual-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .visual-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .visual-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .visual-card h4 {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .visual-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Services Section */
+        .services {
+            background: var(--bg-deep);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-warm);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212,168,83,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card:nth-child(1) .service-icon { background: rgba(212,168,83,0.15); }
+        .service-card:nth-child(2) .service-icon { background: rgba(224,122,95,0.15); }
+        .service-card:nth-child(3) .service-icon { background: rgba(78,205,196,0.15); }
+        .service-card:nth-child(4) .service-icon { background: rgba(242,204,143,0.15); }
+        .service-card:nth-child(5) .service-icon { background: rgba(201,173,167,0.15); }
+        .service-card:nth-child(6) .service-icon { background: rgba(212,168,83,0.15); }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Work/Portfolio Section */
+        .work {
+            background: var(--bg-card);
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .work-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.4s ease;
+        }
+
+        .work-item:hover {
+            transform: scale(1.02);
+        }
+
+        .work-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #1a1a28 0%, #252538 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, var(--bg-elevated) 0%, transparent 60%);
+        }
+
+        .work-image-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .work-info {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .work-category {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .work-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Process Section */
+        .process {
+            background: var(--bg-deep);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-coral), var(--accent-teal));
+            opacity: 0.3;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--bg-card);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--bg-elevated);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--accent-gold);
+            opacity: 0.2;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 1;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--bg-deep);
+            font-size: 1.1rem;
+        }
+
+        .author-info h5 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg-deep);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .contact > .section-header p {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .contact-item span:first-child {
+            font-size: 1.3rem;
+        }
+
+        .contact-item a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-gold);
+            color: var(--bg-deep);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-deep);
+            border-top: 1px solid rgba(255,255,255,0.03);
+            padding: 3rem 4rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer .logo {
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* Scroll animations */
+        .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .reveal.active {
+
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .play-button {
-            transition: all 0.3s ease;
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .process-steps {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .process-steps::before {
+                display: none;
+            }
+
+            .contact-details {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
         }
-        .play-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .nav-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(10, 10, 10, 0.8);
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-elevated);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
         }
     </style>
 </head>
-<body class="bg-dark-900 text-white font-sans antialiased overflow-x-hidden">
-
-    <!-- Film Grain Overlay -->
-    <div class="grain-overlay"></div>
-
+<body>
     <!-- Navigation -->
-    <nav class="fixed w-full z-40 nav-blur border-b border-white/10 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 border-2 border-gold-400 rounded-full flex items-center justify-center">
-                    <span class="font-serif text-gold-400 text-lg font-bold">37</span>
-                </div>
-                <span class="font-serif text-xl tracking-wider text-white">STUDIO 37</span>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase">
-                <a href="#work" class="hover:text-gold-400 transition-colors duration-300">Work</a>
-                <a href="#services" class="hover:text-gold-400 transition-colors duration-300">Services</a>
-                <a href="#about" class="hover:text-gold-400 transition-colors duration-300">About</a>
-                <a href="#contact" class="px-6 py-2 border border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-dark-900 transition-all duration-300">Contact</a>
-            </div>
-
-            <button class="md:hidden text-white" onclick="toggleMenu()">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-dark-800 border-t border-white/10">
-            <div class="flex flex-col p-6 gap-4 text-center">
-                <a href="#work" class="py-2 hover:text-gold-400" onclick="toggleMenu()">Work</a>
-                <a href="#services" class="py-2 hover:text-gold-400" onclick="toggleMenu()">Services</a>
-                <a href="#about" class="py-2 hover:text-gold-400" onclick="toggleMenu()">About</a>
-                <a href="#contact" class="py-2 text-gold-400" onclick="toggleMenu()">Contact</a>
-            </div>
-        </div>
+    <nav>
+        <div class="logo">Lens <span>37</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background with gradient -->
-        <div class="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900"></div>
-        
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gold-400/10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gold-400/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-
-        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
-            <p class="text-gold-400 tracking-[0.3em] text-sm mb-6 animate-fade-in-up" style="animation-delay: 0.2s">CINEMATIC STORYTELLING</p>
-            <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-none animate-fade-in-up" style="animation-delay: 0.4s">
-                <span class="block text-stroke mb-2">STUDIO</span>
-                <span class="block text-white">37 FILMS</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up" style="animation-delay: 0.6s">
-                Capturing moments that move. From music videos to weddings, we transform your vision into cinematic reality.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style="animation-delay: 0.8s">
-                <a href="#work" class="px-8 py-4 bg-gold-400 text-dark-900 font-medium tracking-wider hover:bg-gold-500 transition-all duration-300 flex items-center gap-2">
-                    VIEW PORTFOLIO
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                    </svg>
-                </a>
-                <a href="#contact" class="px-8 py-4 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-300 tracking-wider">
-                    START A PROJECT
-                </a>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">Professional Production Company</div>
+            <h1>We Bring You the <span class="accent">Best Visuals</span></h1>
+            <p class="hero-slogan">"Telling stories frame by frame"</p>
+            <p class="hero-desc">Lens 37 is a Nairobi-based production company curated to deliver exceptional visual storytelling. We transform ideas into compelling narratives that resonate, captivate, and inspire.</p>
+            <div class="hero-buttons">
+                <a href="#work" class="btn btn-primary">View Our Work</a>
+                <a href="#contact" class="btn btn-outline">Get In Touch</a>
             </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-            </svg>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-24 md:py-32 bg-dark-800 relative">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-20 reveal">
-                <p class="text-gold-400 tracking-[0.3em] text-sm mb-4">WHAT WE DO</p>
-                <h2 class="font-serif text-4xl md:text-6xl text-white mb-6">Our Specializations</h2>
-                <div class="w-24 h-px bg-gold-400 mx-auto"></div>
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="section-header fade-in">
+            <div class="section-label">Who We Are</div>
+            <h2 class="section-title">Crafted in Nairobi, Seen Worldwide</h2>
+            <p class="section-subtitle">We are a team of passionate storytellers, cinematographers, and creative minds dedicated to the art of visual narrative.</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-text fade-in">
+                <h3>Visual Storytelling at Its Finest</h3>
+                <p>At Lens 37, we believe every frame carries a story. Based in the heart of Nairobi, we bring together technical mastery and creative vision to produce content that stands out in a crowded visual landscape.</p>
+                <p>From concept development to final delivery, our team handles every stage of production with meticulous attention to detail. We work with brands, artists, and organizations who understand the power of great visuals.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Projects Delivered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Awards Won</div>
+                    </div>
+                </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Music Videos -->
-                <div class="group relative overflow-hidden bg-dark-700 reveal cursor-pointer">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                    <div class="h-80 flex flex-col justify-end p-8 relative z-10">
-                        <div class="mb-4 transform group-hover:-translate-y-2 transition-transform duration-500">
-                            <svg class="w-10 h-10 text-gold-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                            </svg>
-                            <h3 class="font-serif text-2xl text-white mb-2">Music Videos</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                Visual narratives that amplify your sound. Creative direction, cinematic production, and post-production excellence.
-                            </p>
+            <div class="about-visual fade-in">
+                <div class="about-visual-inner">
+                    <div class="visual-grid">
+                        <div class="visual-card">
+                            <div class="visual-icon">🎬</div>
+                            <h4>Cinematography</h4>
+                            <p>4K & 8K filming</p>
                         </div>
-                        <div class="w-12 h-px bg-gold-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                    </div>
-                </div>
-
-                <!-- Weddings -->
-                <div class="group relative overflow-hidden bg-dark-700 reveal cursor-pointer" style="transition-delay: 0.1s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                    <div class="h-80 flex flex-col justify-end p-8 relative z-10">
-                        <div class="mb-4 transform group-hover:-translate-y-2 transition-transform duration-500">
-                            <svg class="w-10 h-10 text-gold-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                            <h3 class="font-serif text-2xl text-white mb-2">Weddings</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                Timeless documentation of your special day. Emotional storytelling with an artistic, cinematic approach.
-                            </p>
+                        <div class="visual-card">
+                            <div class="visual-icon">✂️</div>
+                            <h4>Post Production</h4>
+                            <p>Editing & grading</p>
                         </div>
-                        <div class="w-12 h-px bg-gold-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                    </div>
-                </div>
-
-                <!-- Ceremonies -->
-                <div class="group relative overflow-hidden bg-dark-700 reveal cursor-pointer" style="transition-delay: 0.2s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                    <div class="h-80 flex flex-col justify-end p-8 relative z-10">
-                        <div class="mb-4 transform group-hover:-translate-y-2 transition-transform duration-500">
-                            <svg class="w-10 h-10 text-gold-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                            <h3 class="font-serif text-2xl text-white mb-2">Ceremonies</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                Milestone celebrations captured with dignity and art. Graduations, awards, and life achievements preserved forever.
-                            </p>
+                        <div class="visual-card">
+                            <div class="visual-icon">🎨</div>
+                            <h4>Color Grading</h4>
+                            <p>Cinematic looks</p>
                         </div>
-                        <div class="w-12 h-px bg-gold-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                    </div>
-                </div>
-
-                <!-- Corporate -->
-                <div class="group relative overflow-hidden bg-dark-700 reveal cursor-pointer" style="transition-delay: 0.3s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                    <div class="h-80 flex flex-col justify-end p-8 relative z-10">
-                        <div class="mb-4 transform group-hover:-translate-y-2 transition-transform duration-500">
-                            <svg class="w-10 h-10 text-gold-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                            <h3 class="font-serif text-2xl text-white mb-2">Corporate</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                Brand stories, commercials, and event coverage. Professional production that elevates your business image.
-                            </p>
+                        <div class="visual-card">
+                            <div class="visual-icon">🎵</div>
+                            <h4>Sound Design</h4>
+                            <p>Audio mastering</p>
                         </div>
-                        <div class="w-12 h-px bg-gold-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio/Work Section -->
-    <section id="work" class="py-24 md:py-32 bg-dark-900 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
-                <div>
-                    <p class="text-gold-400 tracking-[0.3em] text-sm mb-4">SELECTED WORK</p>
-                    <h2 class="font-serif text-4xl md:text-6xl text-white">Featured Projects</h2>
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="section-header fade-in">
+            <div class="section-label">What We Do</div>
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Full-spectrum production services tailored to bring your vision to life with precision and artistry.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-icon">🎥</div>
+                <h3>Commercial Production</h3>
+                <p>High-impact commercials and brand films that communicate your message with clarity and emotion. From TV spots to digital campaigns.</p>
+                <div class="service-tags">
+                    <span class="tag">TV Commercials</span>
+                    <span class="tag">Brand Films</span>
+                    <span class="tag">Product Videos</span>
                 </div>
-                <a href="https://instagram.com/ron37._" target="_blank" class="mt-6 md:mt-0 text-gold-400 hover:text-white transition-colors duration-300 flex items-center gap-2">
-                    <span>View All on Instagram</span>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                </a>
             </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">📽️</div>
+                <h3>Documentary Filming</h3>
+                <p>Authentic storytelling that captures real moments and human experiences. We document stories that matter with sensitivity and depth.</p>
+                <div class="service-tags">
+                    <span class="tag">Short Docs</span>
+                    <span class="tag">Feature Docs</span>
+                    <span class="tag">Interviews</span>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">🎬</div>
+                <h3>Music Videos</h3>
+                <p>Visually stunning music videos that amplify the artist's vision. Creative direction, choreography coordination, and cinematic execution.</p>
+                <div class="service-tags">
+                    <span class="tag">Performance</span>
+                    <span class="tag">Narrative</span>
+                    <span class="tag">Conceptual</span>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">📸</div>
+                <h3>Photography</h3>
+                <p>Professional photography services for brands, events, and editorial needs. From product shots to portrait sessions.</p>
+                <div class="service-tags">
+                    <span class="tag">Product</span>
+                    <span class="tag">Portrait</span>
+                    <span class="tag">Event</span>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">✨</div>
+                <h3>Post Production</h3>
+                <p>Complete post-production pipeline including editing, color grading, sound design, VFX, and final delivery in all formats.</p>
+                <div class="service-tags">
+                    <span class="tag">Editing</span>
+                    <span class="tag">Color Grading</span>
+                    <span class="tag">VFX</span>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">🏢</div>
+                <h3>Corporate Videos</h3>
+                <p>Professional corporate content including training videos, internal communications, company profiles, and event coverage.</p>
+                <div class="service-tags">
+                    <span class="tag">Company Profiles</span>
+                    <span class="tag">Event Coverage</span>
+                    <span class="tag">Training</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Project 1 -->
-                <div class="group relative aspect-video bg-dark-800 overflow-hidden reveal cursor-pointer">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-dark-700 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div class="play-button w-20 h-20 rounded-full bg-gold-400/90 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-8 h-8 text-dark-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 p-8 z-20">
-                        <span class="text-gold-400 text-xs tracking-widest uppercase mb-2 block">Music Video</span>
-                        <h3 class="font-serif text-2xl text-white">Midnight Dreams</h3>
+    <!-- Work -->
+    <section class="work" id="work">
+        <div class="section-header fade-in">
+            <div class="section-label">Portfolio</div>
+            <h2 class="section-title">Selected Work</h2>
+            <p class="section-subtitle">A curated collection of projects that showcase our commitment to visual excellence and storytelling.</p>
+        </div>
+        <div class="work-grid">
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">🎬</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Commercial</div>
+                    <h3>Safari Brand Campaign</h3>
+                    <p>A cinematic brand film showcasing Kenyan heritage and modern luxury for a leading hospitality brand.</p>
+                </div>
+            </div>
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">🎵</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Music Video</div>
+                    <h3>"Nairobi Nights" — Artist Feature</h3>
+                    <p>An atmospheric music video capturing the energy and soul of Nairobi after dark.</p>
+                </div>
+            </div>
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">📽️</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Documentary</div>
+                    <h3>Voices of the Mara</h3>
+                    <p>A short documentary highlighting conservation efforts and the communities of the Maasai Mara.</p>
+                </div>
+            </div>
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">🏢</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Corporate</div>
+                    <h3>Tech Startup Launch Film</h3>
+                    <p>Dynamic launch video for a Nairobi-based fintech company entering the East African market.</p>
+                </div>
+            </div>
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">📸</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Photography</div>
+                    <h3>Fashion Editorial — "Urban Roots"</h3>
+                    <p>A fashion photography series blending traditional African textiles with contemporary street style.</p>
+                </div>
+            </div>
+            <div class="work-item fade-in">
+                <div class="work-image">
+                    <div class="work-image-content">🎥</div>
+                </div>
+                <div class="work-info">
+                    <div class="work-category">Commercial</div>
+                    <h3>Coffee Origin Story</h3>
+                    <p>From bean to cup — a visual journey through Kenya's coffee highlands for an international roaster.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="process">
+        <div class="section-header fade-in">
+            <div class="section-label">How We Work</div>
+            <h2 class="section-title">Our Process</h2>
+            <p class="section-subtitle">A streamlined approach to turning your vision into reality.</p>
+        </div>
+        <div class="process-steps">
+            <div class="step fade-in">
+                <div class="step-number">01</div>
+                <h4>Discovery</h4>
+                <p>We listen, research, and understand your story, goals, and audience.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">02</div>
+                <h4>Concept</h4>
+                <p>Creative development, scripting, and visual planning tailored to your vision.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">03</div>
+                <h4>Production</h4>
+                <p>Filming with professional equipment, experienced crew, and creative direction.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">04</div>
+                <h4>Delivery</h4>
+                <p>Post-production, revisions, and final delivery in your preferred formats.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-header fade-in">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">What Clients Say</h2>
+            <p class="section-subtitle">Words from the brands and creators we've had the privilege to work with.</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card fade-in">
+                <p class="testimonial-text">Lens 37 transformed our brand story into something truly cinematic. Their attention to detail and understanding of our vision was exceptional from start to finish.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JM</div>
+                    <div class="author-info">
+                        <h5>James Mwangi</h5>
+                        <span>Marketing Director, Safari Luxe</span>
                     </div>
                 </div>
-
-                <!-- Project 2 -->
-                <div class="group relative aspect-video bg-dark-800 overflow-hidden reveal cursor-pointer" style="transition-delay: 0.1s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-dark-700 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div class="play-button w-20 h-20 rounded-full bg-gold-400/90 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-8 h-8 text-dark-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 p-8 z-20">
-                        <span class="text-gold-400 text-xs tracking-widest uppercase mb-2 block">Wedding</span>
-                        <h3 class="font-serif text-2xl text-white">The Johnson Ceremony</h3>
+            </div>
+            <div class="testimonial-card fade-in">
+                <p class="testimonial-text">Working with the Lens 37 team was an incredible experience. They brought a level of creativity and professionalism that elevated our music video beyond what we imagined.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AO</div>
+                    <div class="author-info">
+                        <h5>Amina Oduor</h5>
+                        <span>Recording Artist</span>
                     </div>
                 </div>
-
-                <!-- Project 3 -->
-                <div class="group relative aspect-video bg-dark-800 overflow-hidden reveal cursor-pointer" style="transition-delay: 0.2s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-dark-700 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div class="play-button w-20 h-20 rounded-full bg-gold-400/90 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-8 h-8 text-dark-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 p-8 z-20">
-                        <span class="text-gold-400 text-xs tracking-widest uppercase mb-2 block">Corporate</span>
-                        <h3 class="font-serif text-2xl text-white">Tech Summit 2024</h3>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="group relative aspect-video bg-dark-800 overflow-hidden reveal cursor-pointer" style="transition-delay: 0.3s">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-dark-700 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div class="play-button w-20 h-20 rounded-full bg-gold-400/90 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-8 h-8 text-dark-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 p-8 z-20">
-                        <span class="text-gold-400 text-xs tracking-widest uppercase mb-2 block">Ceremony</span>
-                        <h3 class="font-serif text-2xl text-white">Graduation Highlights</h3>
+            </div>
+            <div class="testimonial-card fade-in">
+                <p class="testimonial-text">The documentary they produced for our conservation project captured the heart of our mission. The storytelling was powerful, sensitive, and visually breathtaking.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">DK</div>
+                    <div class="author-info">
+                        <h5>Dr. Kipchoge</h5>
+                        <span>Founder, Mara Conservation Trust</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-24 md:py-32 bg-dark-800 relative">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal">
-                    <p class="text-gold-400 tracking-[0.3em] text-sm mb-4">ABOUT US</p>
-                    <h2 class="font-serif text-4xl md:text-5xl text-white mb-8 leading-tight">Crafting Visual Stories Since Day One</h2>
-                    <p class="text-gray-400 leading-relaxed mb-6 text-lg">
-                        At Studio 37 Films, we believe every frame tells a story. Founded with a passion for cinematic excellence, we've dedicated ourselves to capturing life's most meaningful moments with artistry and precision.
-                    </p>
-                    <p class="text-gray-400 leading-relaxed mb-8">
-                        Whether it's the raw energy of a music video, the tender moments of a wedding, the gravitas of a corporate event, or the pride of a graduation ceremony, we approach each project with fresh eyes and creative innovation.
-                    </p>
-                    
-                    <div class="grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
-                        <div>
-                            <span class="block font-serif text-3xl text-gold-400 mb-1">50+</span>
-                            <span class="text-sm text-gray-500 tracking-wider uppercase">Projects</span>
-                        </div>
-                        <div>
-                            <span class="block font-serif text-3xl text-gold-400 mb-1">4</span>
-                            <span class="text-sm text-gray-500 tracking-wider uppercase">Years</span>
-                        </div>
-                        <div>
-                            <span class="block font-serif text-3xl text-gold-400 mb-1">100%</span>
-                            <span class="text-sm text-gray-500 tracking-wider uppercase">Passion</span>
-                        </div>
-                    </div>
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="section-header fade-in">
+            <div class="section-label">Get In Touch</div>
+            <h2 class="section-title">Let's Create Together</h2>
+            <p class="section-subtitle">Ready to bring your story to life? Reach out and let's discuss your next project.</p>
+        </div>
+        <div class="contact-content fade-in">
+            <div class="contact-details">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:hello@lens37.co.ke">hello@lens37.co.ke</a>
                 </div>
-                
-                <div class="relative reveal">
-                    <div class="aspect-[4/5] bg-dark-700 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-br from-gold-400/20 to-transparent"></div>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <div class="w-32 h-32 border-2 border-gold-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span class="font-serif text-gold-400 text-4xl font-bold">37</span>
-                                </div>
-                                <p class="text-white font-serif text-xl">Studio 37 Films</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Decorative Elements -->
-                    <div class="absolute -bottom-6 -right-6 w-48 h-48 border border-gold-400/30 -z-10"></div>
-                    <div class="absolute -top-6 -left-6 w-48 h-48 border border-gold-400/30 -z-10"></div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <a href="tel:+254712345678">+254 712 345 678</a>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>Nairobi, Kenya</span>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 md:py-32 bg-dark-900 relative">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="reveal">
-                <p class="text-gold-400 tracking-[0.3em] text-sm mb-4">GET IN TOUCH</p>
-                <h2 class="font-serif text-4xl md:text-6xl text-white mb-8">Let's Create Together</h2>
-                <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-                    Ready to bring your vision to life? Whether you have a specific project in mind or just want to explore possibilities, we'd love to hear from you.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    <a href="https://instagram.com/ron37._" target="_blank" class="group p-8 border border-white/10 hover:border-gold-400 transition-all duration-300 bg-dark-800/50">
-                        <svg class="w-8 h-8 text-gold-400 mx-auto mb-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                        <h3 class="font-serif text-xl text-white mb-2">Instagram</h3>
-                        <p class="text-gold-400">@ron37._</p>
-                    </a>
-
-                    <div class="group p-8 border border-white/10 hover:border-gold-400 transition-all duration-300 bg-dark-800/50 cursor-pointer" onclick="copyEmail()">
-                        <svg class="w-8 h-8 text-gold-400 mx-auto mb-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <h3 class="font-serif text-xl text-white mb-2">Email</h3>
-                        <p class="text-gold-400 text-sm">studio37films@email.com</p>
-                        <span id="copyFeedback" class="text-xs text-gray-500 mt-2 block opacity-0 transition-opacity">Click to copy</span>
-                    </div>
-
-                    <div class="group p-8 border border-white/10 hover:border-gold-400 transition-all duration-300 bg-dark-800/50">
-                        <svg class="w-8 h-8 text-gold-400 mx-auto mb-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <h3 class="font-serif text-xl text-white mb-2">Location</h3>
-                        <p class="text-gold-400">Available Worldwide</p>
-                    </div>
-                </div>
-
-                <a href="https://instagram.com/ron37._" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-gold-400 text-dark-900 font-medium tracking-wider hover:bg-gold-500 transition-all duration-300">
-                    <span>DM US ON INSTAGRAM</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                </a>
+            <a href="mailto:hello@lens37.co.ke" class="btn btn-primary">Start a Project</a>
+            <div class="social-links">
+                <a href="https://instagram.com/lens37" target="_blank" class="social-link" title="Instagram">📷</a>
+                <a href="https://youtube.com/lens37" target="_blank" class="social-link" title="YouTube">▶️</a>
+                <a href="https://vimeo.com/lens37" target="_blank" class="social-link" title="Vimeo">🎬</a>
+                <a href="https://linkedin.com/company/lens37" target="_blank" class="social-link" title="LinkedIn">💼</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark-800 border-t border-white/10 py-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 border border-gold-400 rounded-full flex items-center justify-center">
-                    <span class="font-serif text-gold-400 text-sm font-bold">37</span>
-                </div>
-                <span class="font-serif text-lg text-white">STUDIO 37 FILMS</span>
-            </div>
-            
-            <p class="text-gray-500 text-sm">© 2024 Studio 37 Films. All rights reserved.</p>
-            
-            <a href="https://instagram.com/ron37._" target="_blank" class="text-gray-400 hover:text-gold-400 transition-colors flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <span class="text-sm">@ron37._</span>
-            </a>
-        </div>
+    <footer>
+        <div class="logo">Lens <span>37</span></div>
+        <p>Telling stories frame by frame — Lens 37 Production Company</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Nairobi, Kenya</p>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Scroll Reveal Animation
+        // Scroll reveal animation
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Navbar Scroll Effect
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.classList.add('shadow-lg');
-                navbar.classList.add('bg-dark-900/95');
-            } else {
-                navbar.classList.remove('shadow-lg');
-                navbar.classList.remove('bg-dark-900/95');
-            }
-            
-            lastScroll = currentScroll;
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
         });
 
-        // Copy Email Function
-        function copyEmail() {
-            const email = "studio37films@email.com";
-            navigator.clipboard.writeText(email).then(() => {
-                const feedback = document.getElementById('copyFeedback');
-                feedback.textContent = "Copied to clipboard!";
-                feedback.classList.remove('opacity-0');
-                setTimeout(() => {
-                    feedback.classList.add('opacity-0');
-                    setTimeout(() => {
-                        feedback.textContent = "Click to copy";
-                    }, 300);
-                }, 2000);
-            });
-        }
-
-        // Smooth Scroll for Anchor Links
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -534,6 +1211,24 @@
                 }
             });
         });
+
+        // Nav background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10, 10, 15, 0.95)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 15, 0.85)';
+            }
+        });
     </script>
 </body>
-</html>
+</html>'''
+
+# Save the file
+with open('/mnt/agents/output/index.html', 'w', encoding='utf-8') as f:
+    f.write(html_code)
+
+print(f"File saved successfully!")
+print(f"Total lines: {len(html_code.splitlines())}")
+print(f"File size: {len(html_code)} characters")
